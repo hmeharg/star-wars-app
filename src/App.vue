@@ -1,7 +1,10 @@
 <template>
   <h1>Star Wars Info Center</h1>
   
-  <div v-for="(planet, index) in planetList" :key="index" id="planet-cards">
+  <div v-if="loadingPage">
+    Loading...
+  </div>
+  <div v-else v-for="(planet, index) in planetList" :key="index" id="planet-cards">
     <PlanetCard :planet="planet"></PlanetCard>
   </div>
 
@@ -18,6 +21,7 @@ export default {
   data() {
       return {
         planetList: [],
+        loadingPage: true
       }
     },
     methods: {
@@ -25,6 +29,7 @@ export default {
         const res = await fetch("https://swapi.dev/api/planets/");
         const finalRes = await res.json();
         this.planetList = finalRes.results;
+        this.loadingPage = false;
       }
     },
     mounted() {
